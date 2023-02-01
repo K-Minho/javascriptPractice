@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>게시글 쓰기</h1>
+    <hr>
+    <form>
+        <input type="text" id="title" placeholder="title">
+        <input type="text" id="body" placeholder="body">
+        <input type="text" id="userId" placeholder="userId">
+        <button type="button" onclick="writepost()">글쓰기</button>
+    </form>
+
+
+
+    <h1>게시글 삭제하기</h1>
+    <hr>
+    <input type="text" id="id" placeholder="id"><br>
+    <button type="button" onclick="deleteById()">삭제하기</button>
+
+    <h3>게시글 목록</h3>
+    <table id="postBox">
+        <td id="postBox"></td>
+    </table>
+
+    <button onclick="getPost()">데이터 가져오기</button>
+
+
+
+    <script>
+        function getPost() {
+            $.ajax({
+                type: "get",
+                url: "https://jsonplaceholder.typicode.com/posts",
+
+                headers: {
+                    "content-Type": "application/json; charset=utf-8"
+                },
+                dataType: "json"
+            })
+                .done(function (res) {
+                    console.log(res);
+                    renderAll(res);
+                })
+                .fail(function (err) { //http 상태 코드 실패
+                    console.log(err);
+                    alert("connect failed");
+                });
+        }
+
+        function writepost() {
+            // 1. 값받아오기
+            let post = {
+                title: $("#title").val(),
+                body: $("#body").val(),
+                userId: $("#userId").val()
+
+            }
+            // 2. 통신하기
+            $.ajax({
+                type: "post",
+                url: "https://jsonplaceholder.typicode.com/posts",
+                data: JSON.stringify(post),
+                headers: {
+                    "content-Type": "application/json; charset=utf-8"
+                },
+                dataType: "json"
+            }).done(res => {
+                console.log("id", res.id);
+                console.log("title", res.title);
+                console.log("body", res.body);
+                console.log("userId", res.userId);
+                render(res);
+            }).fail(err => {
+                alert("error");
+            });
+        }
+        function deleteById() {
+            // 1. 값받아오기
+            let id = $("#id").val();
+            // 2. 유효성 검사
+            if (id == "" || id == "undifined") {
+                alert("올바르지 않는 id");
+                return; // 함수 종료
+            }
+            // 3. 통신하기
+            $.ajax({
+                type: "delete",
+                url: `https://jsonplaceholder.typicode.com/posts/${id}`
+            }).done(res => {
+                alert("sucess");
+                console.log(id);
+                deleteRender(id);
+                // location.href = "https://jsonplaceholder.typicode.com/posts/"
+            }).fail(err => {
+                alert("error");
+            });
+        }
+        function render(res) {
+            let el = `<tr id="post${res.id}">
+                <div><td>${res.id}</td> <td>${res.title}</td> <td>${res.body}</td> <td>${res.userId}</td> </td></div>
+                </tr>`;
+            $("#postBox").prepend(el);
+        }
+        function renderAll(res) {
+            res.forEach(ele => {
+                let title = `${ele.title}`.substr(1, 3);
+                let body = `${ele.body}`.substr(1, 5);
+                let el = `<tr id="post${ele.id}">
+                <div><td>${ele.id}</td> <td>${title}</td> <td>${body}</td> <td>${ele.userId}</td> </td></div>
+                </tr>`;
+                $("#postBox").append(el);
+            });
+        }
+        function deleteRender(id) {
+            $("#post${id}").remove();
+        }
+    </script>
+</body>
+
+</html>
