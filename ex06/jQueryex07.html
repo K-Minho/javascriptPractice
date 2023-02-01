@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/684c417742.js" crossorigin="anonymous"></script>
+    <style>
+        .box {
+            padding: 20px;
+        }
+
+        .my-cursor:hover {
+            cursor: pointer;
+            color: royalblue;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <table border="1">
+            <td id="box">
+                <i id="star" class="fa-regular fa-star fa-xl my-cursor"></i>
+                <!-- <i class="fa-solid fa-star fa-2xl my-size"></i> -->
+                즐겨찾기
+            </td>
+            <td id="toggle"> 더보기 </td>
+            <tr id="panel1" style="display: none;">
+                <td>
+                    <i id="bookmark" class="fa-regular fa-bookmark my-cursor"></i>
+                    북마크
+                </td>
+            </tr>
+            <tr id="panel2" style="display: none;">
+                <td>
+                    <i id="arrow" class="fa-solid fa-arrow-up-right-from-square my-cursor"></i>
+                    퍼가기
+                </td>
+            </tr>
+            <tr id="panel3" style="display: none;">
+                <td>
+                    <i id="camera" class="fa-solid fa-camera my-cursor"></i>
+                    캡쳐하기
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        $("#box").click(() => {
+            $("#star").toggleClass("fa-solid");
+        });
+        $("#panel1").click(() => {
+            $("#bookmark").toggleClass("fa-solid");
+        });
+        $("#toggle").click(function () {
+            $("#panel1").slideToggle("fast");
+            $("#panel2").slideToggle("fast");
+            $("#panel3").slideToggle("fast");
+        });
+    </script>
+
+</body>
+
+</html>

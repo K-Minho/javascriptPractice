@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>ajax get request</h1>
+    <hr>
+    <div id="postBox">
+
+    </div>
+    <button onclick="getPost()">call</button>
+    <script>
+        function getPost() {
+
+            $.ajax({
+                type: "get",
+                url: "http://localhost:8080/init/post",
+                dataType: "json"
+            })
+                .done(function (res) {
+                    // console.log(res);
+                    if (res.code == 1) {
+                        // alert("sucess");
+                        render(res.data);
+                        addListener();
+                    } else { // 미리 설정해둔 에러 코드
+                        alert("connect failed");
+                    }
+                })
+                .fail(function (err) { //http 상태 코드 실패
+                    console.log(err);
+                    alert("connect failed");
+                });
+        }
+
+        function render(posts) {
+            posts.forEach((post) => {
+                let el = `
+                    <div id="post${post.id}">${post.id} ${post.title} ${post.content}</div>
+                    <button class="postData" value="post${post.id}">삭제</button>
+                `;
+                $("#postBox").prepend(el);
+            });
+        }
+
+        function addListener() {
+            $(".postData").click((event) => {
+                console.log(event.currentTarget);
+                console.log(event.currentTarget.value);
+                $(event.currentTarget).remove();
+                $(`#${event.currentTarget.value}`).remove();
+            });
+        }
+    </script>
+</body>
+
+</html>

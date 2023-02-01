@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <h1>회원가입 유효성 검사</h1>
+    <hr>
+    <form action="/join" method="post" onsubmit="return valid()">
+        <input id="id" type="text" value="" placeholder="Enter id" required>
+        <input id="password" type="password" value="" placeholder="Enter password" required>
+        <input id="passwordCheck" type="password" value="" placeholder="Enter password One More" required>
+        <button type="submit">회원 가입</button>
+    </form>
+
+    <script>
+        function valid() {
+            let password = $("#password").val();
+            console.log("password : ", password);
+            let passwordCheck = $("#passwordCheck").val();
+            console.log("passwordCheck : ", passwordCheck);
+            if (password != passwordCheck) {
+                alert("ㄴㄴ");
+                return false;
+            }
+            alert("ㅇㅇ");
+            // return true;
+        }
+    </script>
+</body>
+
+</html>
